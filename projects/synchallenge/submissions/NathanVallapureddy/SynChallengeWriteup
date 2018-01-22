@@ -1,0 +1,12 @@
+I used the following features:
+
+1: Median pixel intensity (np.percentile)
+2: Calculation of the Froebenius norm (sum of the squared pixel values)
+3: Calulation of the sum of the pixel values
+4: Metric that weighs extreme values (those close to 0 and those close to 255) the hardest
+5: Calculation of how many 'peaks' exist in the data
+6: Calulation of the sum of changes between adjacent pixels
+7: Contrast feature
+The first 4 features ensure that two images with similar metrics have a similar distribution of the pixels (how many are 0, 1, ..., 255).
+The last 3 features help ensure that two images with similar metrics have the same shape.
+Together, these 7 completely robust features are somewhat accurate in classification.
