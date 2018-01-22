@@ -1,0 +1,56 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf830
+{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red255\green255\blue255;\red0\green0\blue0;
+\red255\green255\blue255;}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;\cssrgb\c100000\c100000\c100000;\cssrgb\c0\c0\c0;
+\cssrgb\c100000\c100000\c100000;}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}.}{\leveltext\leveltemplateid1\'02\'00.;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid1}
+{\list\listtemplateid2\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid101\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid2}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}{\listoverride\listid2\listoverridecount0\ls2}}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\sl500\partightenfactor0
+
+\f0\b\fs52 \cf2 \cb3 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 THIS IS BRANDON LIM'S PARAGRAPH WRITE UP:\
+\pard\pardeftab720\sl320\partightenfactor0
+
+\b0\fs28 \cf2 \
+I really enjoyed this assignment. My one complaint about it is that while it is cool to experiment with machine learning, I have no idea what is going on behind the scenes. I wish I had some understanding what it means to get a "histograph oriented gradients" for example. Of course, this probably requires lots of advanced math that I do not currently possess right now.\
+\
+\
+When I ran this notebook with the new features I received a f1 score of 0.86, which is above the 0.8 required for the assignment. I will explain my reasoning for adding the three new features and the change I made from the default parameters:\
+\
+\pard\tx720\pardeftab720\sl320\partightenfactor0
+\cf2 \cb1 \
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sl340\partightenfactor0
+\ls1\ilvl0
+\b \cf2 \cb3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	1.	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Using graycoprops('contrast'):
+\b0 \'a0When examining the true positives and true negatives, I noticed a difference in the amount of contrast (the sharpness between a dark color and white color). This was the first new feature I added because I used the code for graycoprops('homogeneity') that was given. This is the only feature I added due to examining the results of my classifier.\
+\ls1\ilvl0\cb1 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	2.	}
+\b \cf4 \cb5 \expnd0\expndtw0\kerning0
+Using hog with changed tuple values:
+\b0 \'a0I originally chose to use the hog feature because when I searched for the word "feature vector" in the scikit-image documentation, the only time those words appeared was in the description for the hog feature. When I used it, I noticed a big jump in my f1 score, so I kept it. I changed the tuple value parameters because when I ran it with the default, I got an error after running cell 7. The code still ran, it just gave me a warning about how some prediction values were 0 or something like that. Just by experimenting I discovered that when I changed the tuple values to their current numbers the warning went away.\cb1 \
+\ls1\ilvl0\cf2 \kerning1\expnd0\expndtw0 {\listtext	3.	}
+\b \cf4 \cb5 \expnd0\expndtw0\kerning0
+Using local_binary_pattern:
+\b0 \'a0I chose this feature because it was one of the few other features that returned a two dimensional array, which I was familiar with using from implementing the hog feature. The parameters are set to what they are because of a tutorial I found that uses this feature.\cf2 \cb3 \outl0\strokewidth0 \strokec2 \
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 \
+My submission fulfills the full marks outlined in the rubric:\
+\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sl320\partightenfactor0
+\ls2\ilvl0\cf2 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\'95	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 I implemented three new features and two new functions from the scikit-image library\cb1 \
+\ls2\ilvl0\cb3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\'95	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 I changed the default parameters of one function\cb1 \
+\ls2\ilvl0\cb3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\'95	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 My f1 score is greater than 0.8\cb1 \
+\ls2\ilvl0\cb3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\'95	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 I wrote this writeup (formatted with HTML)\cb1 \
+\ls2\ilvl0\cb3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\'95	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Code does not break\cb1 \
+\ls2\ilvl0\cb3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\'95	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 And I wrote my name on the assignment.\cb1 \
+}
