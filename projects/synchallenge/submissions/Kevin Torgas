@@ -1,0 +1,174 @@
+# Synapse Classification Challenge
+# Introduction to Connectomics 2018
+# Kevin Torgas
+
+your_name = 'torgas_kevin'
+!pip install mahotas
+!pip install ndparse
+%matplotlib inline
+
+# Load data
+
+import numpy as np
+
+data = np.load('./synchallenge2017_training.npz')
+
+imtrain = data['imtrain']
+annotrain = data['annotrain']
+ytrain = data['ytrain']
+
+data = np.load('./synchallenge2017_validation.npz')
+
+imvalid = data['imvalid']
+annovalid = data['annovalid']
+yvalid = data['yvalid']
+
+# Define feature extraction code
+
+import skimage.feature as skif
+
+def extract_features(imdata):
+    xtrain = []
+    for im in imdata:
+        fvector = []
+        # 50th percentile based on intensity
+        fvector.append(np.percentile(im,50))
+        
+        #every pixel is a feature
+        """im = Image.open("thisimage.png")
+        width, height = im.size
+        print (width)
+        print (height)
+        for x in range(width):
+            for y in range(height):
+                fvector.append(im.getpixel((x,y)))"""
+        
+        
+       
+        for x in range(0, len(im)):
+            for y in range(0, len(im[x])):
+                fvector.append(im[x][y])
+                    
+                
+        #for x in range(0, len(im)):
+            #for y in range(0, len(im[x])):
+               # fvector.append((im[x][y])/2)
+                
+            
+            
+
+            
+                
+        
+        
+        #canny feature?
+        #fvector.append((skif.canny(im)).flatten)
+        #fvector.append((skif.canny(im)).flatten)
+        
+
+        # add a contrast feature
+        g = skif.greycomatrix(im, [1, 2], [0, np.pi/2],normed=True, symmetric=True)
+        homogeneity = skif.greycoprops(g, 'homogeneity')
+        contrast =  skif.greycoprops(g, 'contrast')
+       
+
+        # explict way to add feature elements one at a time
+        homogeneity = np.ravel(homogeneity)
+        for i in homogeneity:
+            fvector.append(i)
+
+         # Works with contrast!
+        contrast = np.ravel(contrast)
+        for i in contrast:
+            fvector.append(i)
+       
+      
+    
+        fvector = np.asarray(fvector)
+        xtrain.append(fvector)
+
+    return np.asarray(xtrain)
+    
+    
+    # Extract Features from training
+
+xtrain = extract_features(imtrain)
+# Train Classifier
+
+from sklearn.ensemble import RandomForestClassifier
+clf = RandomForestClassifier(n_estimators=200)
+clf = clf.fit(xtrain, ytrain)
+
+
+# Extract features from validation set
+xvalid = extract_features(imvalid)
+
+
+# Run Classifier on validation set
+scoresvalid = clf.predict_proba(xvalid)
+
+# Best f1 score report on validation set
+
+from sklearn.metrics import f1_score
+
+# Can add post-processing here if desired
+
+prob_syn = scoresvalid[:,1]
+
+# default threshold
+print('default f1 score: {}'.format(np.round(f1_score(yvalid, prob_syn >=0.5),2)))
+
+f1_out = 0
+thresh = 0
+for i in np.arange(0.0, 1, 0.05):
+    f1_test =  f1_score(yvalid, prob_syn > i)
+    if f1_test > f1_out:
+        f1_out = f1_test
+        thresh = i
+
+print('My best validation f1-score is: {} at {} threshold.'.format(np.round(f1_out,2), thresh))
+
+# here we can inspect results
+
+valid_labels = np.asarray(prob_syn > thresh,dtype='int')
+# find images we did well on
+idx_correct_syn = np.where((valid_labels == yvalid) & (yvalid == 1))[0]
+idx_correct_nosyn = np.where((valid_labels == yvalid) & (yvalid == 0))[0]
+# find images we did poorly on
+
+idx_wrong_syn = np.where((valid_labels != yvalid) & (yvalid == 1))[0]
+idx_wrong_nosyn = np.where((valid_labels != yvalid) & (yvalid == 0))[0]
+import ndparse as ndp
+
+print('synapse present - true positive')
+ndp.plot(imvalid[idx_correct_syn[3]])
+
+print('no synapse present - true negative')
+ndp.plot(imvalid[idx_correct_nosyn[3]])
+
+print('synapse present - false negative')
+ndp.plot(imvalid[idx_wrong_syn[3]])
+
+print('no synapse present - false positive')
+ndp.plot(imvalid[idx_wrong_nosyn[3]])
+
+# Validate performance on test set (should only run/score once!)
+
+data = np.load('./synchallenge2017_test_notruth.npz')
+
+imtest = data['imtest']
+annotest = data['annotest']
+
+# Extract features from test set
+xtest = extract_features(imtest)
+
+# Run classifier on test set
+scoretest = clf.predict_proba(xvalid)
+
+# Post-processing
+prob_syntest = scoretest[:,1]
+syntest_predict = prob_syntest > thresh
+syntest_predict = np.asarray(syntest_predict,dtype = 'uint8')
+
+# save file and upload to google docs with label vector
+np.save(your_name+'_synchallenge_testdata.npy',syntest_predict)
