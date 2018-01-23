@@ -1,0 +1,19 @@
+Most of my methods took advantage of the fact that the synapse was always
+centered in the image. At first, I tried something very complicated, which
+was tring to find a dark (low intensity) strip in the center of the image,
+regardless of rotation. This was done by observing the lowest average pixel
+value of a region defined by two lines at 0, 5 ... 180 degrees to the 
+horizontal. Then, this average intensity of the strip and the two regions
+it split the image into were added to the features vector. Unfortunately, 
+this method wasn't very accurate (giving a f1 score of .77), probably
+because many of the synapses weren't actually straight, and because the 
+regions that weren't synapses varied in average pixel intesity.
+
+What worked much better though, was simply observing the center (defined
+in this case as roughly the middle third) of the image and taking each 
+pixel as its own feature. This alone resulted in a f1 score of 
+approximately .89. With a few tweaks to the size of this "center" as well as
+adding back the default homogeneity feature I was able to raise the score
+to 0.9. I also tried experimenting with the Hessian Matrix and Canny edge
+detectors, but these had minimal to negative effects on the score, so I
+ended up not using them. 
