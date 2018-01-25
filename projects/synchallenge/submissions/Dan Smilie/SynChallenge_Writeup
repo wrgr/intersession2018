@@ -1,0 +1,10 @@
+For this assignment, I started by using the grey comatrix to add
+features like contrast, dissimilarity, energy, correlation and ASM.
+Immediately my f1 score was around .81
+I then saw that there was an edge detector function and tried to use that
+because in the actual images, synapses looked like edges.
+My f1 score dropped below .80 however and I would guess thats because
+the images are so magnified that its difficult for the function to truly see
+an edge. Finally, I used the Daisy feature descriptors and that easily
+put me above .9. I then tweaked the parameters for that function to get a
+final score around .91/.92
